@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            margin: 0; padding-top: 50px; text-align: center; color: #2d3436; min-height: 100vh;
+        }
+
+        .form-box {
+            background: white; width: 90%; max-width: 400px; margin: 0 auto; padding: 40px;
+            border-radius: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        h1 { 
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 2em; margin-bottom: 20px;
+            background: linear-gradient(to right, #0984e3, #00cec9);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        h2 { margin-top: 0; color: #636e72; font-size: 1.2em; margin-bottom: 20px;}
+
+        /* СТИЛЬ ПРЕДУПРЕЖДЕНИЯ (Новое) */
+        .alert-box {
+            background-color: #fff0f3; /* Нежно-розовый */
+            border: 2px solid #ffccd5;
+            color: #a4133c; /* Темно-бордовый текст */
+            padding: 15px;
+            border-radius: 20px; /* Скругляем под твой стиль */
+            margin-bottom: 25px;
+            font-size: 13px;
+            line-height: 1.4;
+            text-align: left;
+        }
+        .alert-title {
+            font-weight: 800;
+            display: block;
+            margin-bottom: 5px;
+            color: #800f2f;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        label { display: block; text-align: left; font-size: 12px; color: #b2bec3; margin-left: 15px; margin-top: 10px;}
+
+        input { 
+            width: 100%; padding: 15px; margin: 5px 0; box-sizing: border-box;
+            border: 2px solid #dfe6e9; border-radius: 50px; 
+            font-family: 'Nunito', sans-serif; font-size: 16px; outline: none; transition: 0.3s;
+            text-align: center;
+        }
+        input:focus { border-color: #00cec9; background: #e0f7fa; }
+
+        button {
+            width: 100%; padding: 15px; background: linear-gradient(45deg, #00cec9, #0984e3); 
+            color: white; border: none; border-radius: 50px; cursor: pointer; font-size: 18px; 
+            margin-top: 20px; font-weight: 800; letter-spacing: 1px; transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 206, 201, 0.3);
+        }
+        button:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 206, 201, 0.5); }
+
+        a { color: #0984e3; text-decoration: none; font-weight: bold; }
+        .footer-link { margin-top: 20px; display: block; font-size: 0.9em; color: #636e72; }
+    </style>
+</head>
+<body>
+
+    <div class="form-box">
+        <a href="/" style="text-decoration: none;"><h1>🚙 YohkEcar</h1></a>
+        <h2>Новый пользователь</h2>
+
+        <div class="alert-box">
+            <span class="alert-title">⚠️ Запомните данные!</span>
+            Пожалуйста, запишите ваш логин и пароль в надежном месте. <br>Функция восстановления пока недоступна, при утере пароля доступ будет закрыт.
+        </div>
+
+        <form action="/register" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <label>Придумайте логин (английскими):</label>
+            <input type="text" name="login" placeholder="Логин" required>
+
+            <label>Как вас будут видеть другие:</label>
+            <input type="text" name="nickname" placeholder="Псевдоним (Имя)" required>
+
+            <label>Придумайте пароль:</label>
+            <input type="password" name="password" placeholder="Пароль" required>
+
+            <button type="submit">Создать аккаунт</button>
+        </form>
+
+        <span class="footer-link">Уже есть аккаунт? <a href="/login">Войти</a></span>
+        <span class="footer-link"><a href="/">← На главную</a></span>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Чат с {{ client_login }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Nunito', sans-serif; background: #2d3436; margin: 0; padding: 20px; }
+        .chat-container { max-width: 600px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; height: 80vh; display: flex; flex-direction: column; }
+        .header { background: #2d3436; color: white; padding: 15px; text-align: center; font-weight: bold; border-bottom: 5px solid #00cec9; }
+        .messages-box { flex: 1; padding: 20px; overflow-y: auto; background: #f1f2f6; display: flex; flex-direction: column; gap: 10px; }
+
+        .msg { padding: 10px 15px; border-radius: 15px; max-width: 70%; word-wrap: break-word; font-size: 14px;}
+        .msg-me { background: #00cec9; color: white; align-self: flex-end; border-bottom-right-radius: 2px; } /* Админ пишет бирюзовым */
+        .msg-client { background: white; color: #2d3436; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #dfe6e9;}
+
+        .time { font-size: 0.7em; opacity: 0.7; margin-top: 5px; display: block; text-align: right; }
+
+        .input-area { padding: 15px; background: white; border-top: 1px solid #dfe6e9; display: flex; gap: 10px; }
+        input { flex: 1; padding: 10px; border-radius: 50px; border: 1px solid #b2bec3; outline: none; }
+        button { background: #2d3436; color: white; border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; }
+
+        .back-link { display: block; text-align: center; margin-top: 10px; color: white; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="header">Чат с клиентом: {{ client_login }}</div>
+
+        <div class="messages-box" id="msgBox">
+            {% for m in messages %}
+                {% if m['sender'] == 'admin' %}
+                    <div class="msg msg-me">
+                        {{ m['text'] }}
+                        <span class="time">{{ m['date'] }}</span>
+                    </div>
+                {% else %}
+                    <div class="msg msg-client">
+                        {{ m['text'] }}
+                        <span class="time">{{ m['date'] }}</span>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <form action="/admin/send_reply" method="post" class="input-area">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <input type="hidden" name="client_login" value="{{ client_login }}">
+            <input type="text" name="text" placeholder="Ответ админа..." required autocomplete="off">
+            <button type="submit">Ответить</button>
+        </form>
+    </div>
+
+    <a href="/admin/chats" class="back-link">← К списку чатов</a>
+
+    <script>
+        var objDiv = document.getElementById("msgBox");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подать объявление</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            margin: 0; padding-bottom: 50px; text-align: center; color: #2d3436;
+        }
+
+        header { padding: 20px; }
+        .logo-link { text-decoration: none; }
+        h1 { 
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 2em; margin: 0;
+            background: linear-gradient(to right, #0984e3, #00cec9);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .form-box {
+            background: white; width: 90%; max-width: 500px; margin: 20px auto; padding: 40px;
+            border-radius: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        h2 { text-align: center; color: #0984e3; margin-top: 0; font-family: 'Montserrat', sans-serif;}
+
+        label.text-label { font-weight: 700; font-size: 14px; display: block; margin-top: 15px; color: #636e72; margin-bottom: 5px;}
+
+        input[type="text"], textarea, select { 
+            width: 100%; padding: 12px 15px; margin: 0; box-sizing: border-box;
+            border: 2px solid #dfe6e9; border-radius: 15px; 
+            font-family: 'Nunito', sans-serif; font-size: 15px; outline: none; transition: 0.3s;
+        }
+        input:focus, textarea:focus, select:focus { border-color: #0984e3; background: #f0f8ff; }
+
+        button {
+            width: 100%; padding: 15px; background: linear-gradient(45deg, #0984e3, #74b9ff); 
+            color: white; border: none; border-radius: 50px; cursor: pointer; font-size: 16px; 
+            margin-top: 30px; font-weight: 800; letter-spacing: 1px; transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(9, 132, 227, 0.3);
+        }
+        button:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(9, 132, 227, 0.5); }
+
+        a.cancel { color: #b2bec3; text-decoration: none; font-size: 14px; display: block; text-align: center; margin-top: 15px; font-weight: bold;}
+        a.cancel:hover { color: #636e72; }
+
+        .upload-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .hidden-input { display: none; }
+
+        .upload-box {
+            width: 80px; height: 80px; border: 2px dashed #b2bec3; border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 24px; color: #b2bec3; background-color: #f8f9fa;
+            background-size: cover; background-position: center; transition: 0.3s;
+        }
+        .upload-box:hover { border-color: #0984e3; color: #0984e3; background: #e1f5fe; }
+        .box-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo-link">
+            <h1>🚙 YohkEcar</h1>
+        </a>
+    </header>
+
+    <div class="form-box">
+        <h2>Новое объявление</h2>
+        <form action="/create" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <label class="text-label">Категория</label>
+            <select name="category">
+                <option value="Транспорт">🚗 Транспорт</option>
+                <option value="Недвижимость">🏠 Недвижимость</option>
+                <option value="Электроника">📱 Электроника</option>
+                <option value="Одежда">👕 Одежда</option>
+                <option value="Услуги">🛠 Услуги</option>
+                <option value="Животные">🐈 Животные</option>
+                <option value="Другое">📦 Другое</option>
+            </select>
+
+            <label class="text-label">Страна</label>
+            <select name="region" required>
+                <option value="Австрия">🇦🇹 Австрия</option>
+                <option value="Бельгия">🇧🇪 Бельгия</option>
+                <option value="Болгария">🇧🇬 Болгария</option>
+                <option value="Венгрия">🇭🇺 Венгрия</option>
+                <option value="Германия">🇩🇪 Германия</option>
+                <option value="Греция">🇬🇷 Греция</option>
+                <option value="Дания">🇩🇰 Дания</option>
+                <option value="Ирландия">🇮🇪 Ирландия</option>
+                <option value="Испания">🇪🇸 Испания</option>
+                <option value="Италия">🇮🇹 Италия</option>
+                <option value="Кипр">🇨🇾 Кипр</option>
+                <option value="Латвия">🇱🇻 Латвия</option>
+                <option value="Литва">🇱🇹 Литва</option>
+                <option value="Люксембург">🇱🇺 Люксембург</option>
+                <option value="Мальта">🇲🇹 Мальта</option>
+                <option value="Нидерланды">🇳🇱 Нидерланды</option>
+                <option value="Польша">🇵🇱 Польша</option>
+                <option value="Португалия">🇵🇹 Португалия</option>
+                <option value="Румыния">🇷🇴 Румыния</option>
+                <option value="Словакия">🇸🇰 Словакия</option>
+                <option value="Словения">🇸🇮 Словения</option>
+                <option value="Финляндия">🇫🇮 Финляндия</option>
+                <option value="Франция">🇫🇷 Франция</option>
+                <option value="Хорватия">🇭🇷 Хорватия</option>
+                <option value="Чехия">🇨🇿 Чехия</option>
+                <option value="Швеция">🇸🇪 Швеция</option>
+                <option value="Эстония">🇪🇪 Эстония</option>
+            </select>
+
+            <label class="text-label">Город</label>
+            <input type="text" name="city" placeholder="Например: Berlin" required>
+
+            <label class="text-label">Название товара</label>
+            <input type="text" name="title" placeholder="Например: BMW X5, черный" required>
+
+            <label class="text-label">Фотографии (нажмите на +)</label>
+            <div class="upload-container">
+                <input type="file" name="image1" id="file1" class="hidden-input" accept="image/*" onchange="previewImage(1)">
+                <label for="file1" id="lbl1" class="upload-box">+</label>
+
+                <input type="file" name="image2" id="file2" class="hidden-input" accept="image/*" onchange="previewImage(2)">
+                <label for="file2" id="lbl2" class="upload-box box-hidden">+</label>
+
+                <input type="file" name="image3" id="file3" class="hidden-input" accept="image/*" onchange="previewImage(3)">
+                <label for="file3" id="lbl3" class="upload-box box-hidden">+</label>
+
+                <input type="file" name="image4" id="file4" class="hidden-input" accept="image/*" onchange="previewImage(4)">
+                <label for="file4" id="lbl4" class="upload-box box-hidden">+</label>
+
+                <input type="file" name="image5" id="file5" class="hidden-input" accept="image/*" onchange="previewImage(5)">
+                <label for="file5" id="lbl5" class="upload-box box-hidden">+</label>
+            </div>
+
+            <label class="text-label">Цена (€)</label>
+            <input type="text" name="price" placeholder="Например: 15000" required>
+
+            <label class="text-label">Описание</label>
+            <textarea name="text" rows="5" placeholder="Расскажите подробнее..." required></textarea>
+
+            <label class="text-label">Ваши контакты</label>
+            <input type="text" name="contact" placeholder="Телефон или Telegram" required>
+
+            <button type="submit">Опубликовать</button>
+        </form>
+        <a href="/" class="cancel">Отмена</a>
+    </div>
+
+    <script>
+        function previewImage(num) {
+            var fileInput = document.getElementById('file' + num);
+            var labelBox = document.getElementById('lbl' + num);
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    labelBox.style.backgroundImage = "url('" + e.target.result + "')";
+                    labelBox.innerText = ""; 
+                    labelBox.style.border = "2px solid #00cec9"; 
+                    if (num < 5) {
+                        document.getElementById('lbl' + (num + 1)).style.display = "flex"; 
+                    }
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>

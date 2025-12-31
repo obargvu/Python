@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            margin: 0; padding-bottom: 50px; text-align: center; color: #2d3436;
+        }
+
+        header { padding: 20px; }
+        .logo-link { text-decoration: none; }
+        h1 { 
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 2em; margin: 0;
+            background: linear-gradient(to right, #0984e3, #00cec9);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .form-box {
+            background: white; width: 90%; max-width: 500px; margin: 20px auto; padding: 40px;
+            border-radius: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        h2 { text-align: center; color: #0984e3; margin-top: 0; font-family: 'Montserrat', sans-serif;}
+
+        label { font-weight: 700; font-size: 14px; display: block; margin-top: 15px; color: #636e72; margin-bottom: 5px;}
+
+        input[type="text"], textarea, select { 
+            width: 100%; padding: 12px 15px; margin: 0; box-sizing: border-box;
+            border: 2px solid #dfe6e9; border-radius: 15px; 
+            font-family: 'Nunito', sans-serif; font-size: 15px; outline: none; transition: 0.3s;
+        }
+        input:focus, textarea:focus, select:focus { border-color: #0984e3; background: #f0f8ff; }
+
+        button {
+            width: 100%; padding: 15px; background: linear-gradient(45deg, #0984e3, #74b9ff); 
+            color: white; border: none; border-radius: 50px; cursor: pointer; font-size: 16px; 
+            margin-top: 30px; font-weight: 800; letter-spacing: 1px; transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(9, 132, 227, 0.3);
+        }
+        button:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(9, 132, 227, 0.5); }
+
+        a.cancel { color: #b2bec3; text-decoration: none; font-size: 14px; display: block; text-align: center; margin-top: 15px; font-weight: bold;}
+        a.cancel:hover { color: #636e72; }
+
+        .info { font-size: 13px; color: #b2bec3; background: #f8f9fa; padding: 10px; border-radius: 10px; margin-top: 10px; text-align: center;}
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo-link">
+            <h1>🚙 YohkEcar</h1>
+        </a>
+    </header>
+
+    <div class="form-box">
+        <h2>✏️ Редактирование</h2>
+        <form action="/edit/{{ item['id'] }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <label>Категория</label>
+            <select name="category">
+                <option value="Транспорт" {% if item['category'] == 'Транспорт' %}selected{% endif %}>🚗 Транспорт</option>
+                <option value="Недвижимость" {% if item['category'] == 'Недвижимость' %}selected{% endif %}>🏠 Недвижимость</option>
+                <option value="Электроника" {% if item['category'] == 'Электроника' %}selected{% endif %}>📱 Электроника</option>
+                <option value="Одежда" {% if item['category'] == 'Одежда' %}selected{% endif %}>👕 Одежда</option>
+                <option value="Услуги" {% if item['category'] == 'Услуги' %}selected{% endif %}>🛠 Услуги</option>
+                <option value="Животные" {% if item['category'] == 'Животные' %}selected{% endif %}>🐈 Животные</option>
+                <option value="Другое" {% if item['category'] == 'Другое' %}selected{% endif %}>📦 Другое</option>
+            </select>
+
+            <label>Страна</label>
+            <select name="region">
+                {% set countries = ['Австрия', 'Бельгия', 'Болгария', 'Венгрия', 'Германия', 'Греция', 'Дания', 'Ирландия', 'Испания', 'Италия', 'Кипр', 'Латвия', 'Литва', 'Люксембург', 'Мальта', 'Нидерланды', 'Польша', 'Португалия', 'Румыния', 'Словакия', 'Словения', 'Финляндия', 'Франция', 'Хорватия', 'Чехия', 'Швеция', 'Эстония'] %}
+
+                {% for c in countries %}
+                    <option value="{{ c }}" {% if item['region'] == c %}selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Город</label>
+            <input type="text" name="city" value="{{ item['city'] }}" required>
+
+            <label>Название</label>
+            <input type="text" name="title" value="{{ item['title'] }}" required>
+
+            <label>Цена (€)</label>
+            <input type="text" name="price" value="{{ item['price'] }}" required>
+
+            <label>Описание</label>
+            <textarea name="text" rows="5" required>{{ item['description'] }}</textarea>
+
+            <label>Контакты</label>
+            <input type="text" name="contact" value="{{ item['contact'] }}" required>
+
+            <div class="info">* Фотографии здесь изменить нельзя.</div>
+
+            <button type="submit">Сохранить</button>
+        </form>
+        <a href="/item/{{ item['id'] }}" class="cancel">Отмена</a>
+    </div>
+
+</body>
+</html>

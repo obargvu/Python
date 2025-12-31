@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YohkEcar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Nunito', sans-serif; background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%); margin: 0; color: #2d3436; min-height: 100vh; }
+        header { background: white; padding: 15px 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .logo-link { text-decoration: none; }
+        h1 { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 2.5em; margin: 0; background: linear-gradient(to right, #0984e3, #00cec9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; letter-spacing: -1px; }
+        .btn-group { margin-top: 15px; }
+        .btn { padding: 10px 25px; border-radius: 50px; text-decoration: none; font-weight: 700; margin: 0 5px; transition: all 0.3s ease; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: none; font-size: 14px; cursor: pointer;}
+        .btn-create { background: linear-gradient(45deg, #0984e3, #74b9ff); color: white; }
+        .btn-logout { background: white; color: #ff7675; border: 2px solid #ff7675; }
+        .btn-login { background: white; color: #0984e3; border: 2px solid #0984e3; }
+        .btn-admin { background: #2d3436; color: #fab1a0; border: 2px solid #2d3436; }
+        .btn-support { background: #6c5ce7; color: white; }
+        .btn-fav { background: white; color: #e84393; border: 2px solid #e84393; }
+
+        .search-bar { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); padding: 10px 20px; margin-top: 20px; border-radius: 50px; display: flex; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); flex-wrap: wrap; justify-content: center; }
+        .search-input, .search-select { padding: 12px 20px; border-radius: 50px; border: 1px solid #dfe6e9; outline: none; font-family: inherit; }
+        .search-btn { padding: 12px 25px; border-radius: 50px; border: none; background: #0984e3; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+
+        h2 { text-align: center; color: #2d3436; margin-top: 40px; font-weight: 800; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; display: grid; gap: 20px; }
+
+        .item-card { background: white; padding: 20px; border-radius: 20px; display: flex; gap: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; align-items: center; border: 1px solid rgba(255,255,255,0.5); position: relative; overflow: hidden;}
+        .item-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+        .vip-card { border: 3px solid #ffd700; background: linear-gradient(to right, #fff, #fff9e6); }
+        .vip-badge { background: #ffd700; color: #b33e00; font-weight: bold; padding: 5px 10px; border-radius: 10px; font-size: 0.8em; display: inline-block; margin-bottom: 5px; }
+
+        .ad-banner { background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%); border-radius: 20px; padding: 30px; text-align: center; color: #fff; font-weight: bold; font-size: 1.2em; box-shadow: 0 10px 20px rgba(255, 154, 158, 0.4); border: 2px dashed white; margin: 10px 0; cursor: pointer; transition: 0.3s; }
+        .ad-banner:hover { transform: scale(1.02); }
+        .ad-label { background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 5px; font-size: 0.7em; margin-bottom: 10px; display: inline-block;}
+        .btn-buy-vip { background: white; color: #ff9a9e; border: none; padding: 10px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 15px; display: inline-block; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .btn-buy-vip:hover { background: #ffeaea; transform: translateY(-2px); }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 500px; text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; font-weight: bold; color: #b2bec3; cursor: pointer; transition: 0.3s; }
+        .close-btn:hover { color: #ff7675; }
+        .vip-price-list { list-style: none; padding: 0; margin: 20px 0; }
+        .vip-price-list li { background: #f1f2f6; margin: 10px 0; padding: 15px; border-radius: 10px; font-size: 1.1em; font-weight: bold; color: #2d3436; }
+
+        .gallery-box { width: 160px; flex-shrink: 0; }
+        .main-image { width: 160px; height: 160px; object-fit: cover; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .thumbnails { display: flex; gap: 5px; margin-top: 8px; justify-content: center; }
+        .thumb { width: 30px; height: 30px; object-fit: cover; border-radius: 5px; opacity: 0.6; }
+
+        .item-info { flex: 1; text-align: left; }
+        .item-title { text-decoration: none; color: #2d3436; font-size: 1.5em; font-weight: 800; display: block; margin-bottom: 5px; }
+        .price { color: #0984e3; font-weight: 800; font-size: 1.4em; background: #e1f5fe; padding: 5px 15px; border-radius: 10px; display: inline-block; margin: 5px 0; }
+        .category-tag { background: #dfe6e9; padding: 4px 12px; border-radius: 50px; font-size: 0.8em; color: #636e72; font-weight: 700;}
+        .location-tag { color: #636e72; font-size: 0.9em; margin-left: 10px; font-weight: bold;}
+
+        .fav-heart { float: right; font-size: 1.5em; text-decoration: none; transition: 0.2s; }
+        .fav-heart:hover { transform: scale(1.2); }
+
+        .delete-btn { color: #ff7675; text-decoration: none; font-size: 0.9em; border: 1px solid #ff7675; padding: 5px 15px; border-radius: 50px; float: right; margin-left: 10px;}
+        .delete-btn:hover { background: #ff7675; color: white; }
+
+        .pagination { margin: 40px 0; text-align: center; }
+        .page-btn { background: white; color: #0984e3; padding: 10px 25px; text-decoration: none; border-radius: 50px; margin: 0 5px; font-weight: bold; }
+
+        @media (max-width: 600px) {
+            .item-card { flex-direction: column; text-align: center; }
+            .item-info { text-align: center; }
+            .delete-btn { float: none; display: inline-block; margin-top: 10px; }
+            .fav-heart { float: none; display: block; margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo-link"><h1>🚙 YohkEcar</h1></a>
+        <div class="search-bar">
+            <form action="/" method="get" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+                <input type="text" name="q" class="search-input" placeholder="🔍 Поиск (Товар или Город)" value="{{ search_query }}">
+
+                <select name="cat" class="search-select">
+                    <option value="Все">Все категории</option>
+                    <option value="Транспорт">🚗 Авто</option>
+                    <option value="Недвижимость">🏠 Дом</option>
+                    <option value="Электроника">📱 Гаджеты</option>
+                    <option value="Одежда">👕 Одежда</option>
+                    <option value="Услуги">🛠 Услуги</option>
+                    <option value="Животные">🐈 Животные</option>
+                    <option value="Другое">📦 Другое</option>
+                </select>
+
+                <select name="country" class="search-select">
+                    <option value="">🇪🇺 Вся Европа</option>
+                    <option value="Австрия">🇦🇹 Австрия</option>
+                    <option value="Бельгия">🇧🇪 Бельгия</option>
+                    <option value="Болгария">🇧🇬 Болгария</option>
+                    <option value="Венгрия">🇭🇺 Венгрия</option>
+                    <option value="Германия">🇩🇪 Германия</option>
+                    <option value="Греция">🇬🇷 Греция</option>
+                    <option value="Испания">🇪🇸 Испания</option>
+                    <option value="Италия">🇮🇹 Италия</option>
+                    <option value="Кипр">🇨🇾 Кипр</option>
+                    <option value="Латвия">🇱🇻 Латвия</option>
+                    <option value="Литва">🇱🇹 Литва</option>
+                    <option value="Люксембург">🇱🇺 Люксембург</option>
+                    <option value="Мальта">🇲🇹 Мальта</option>
+                    <option value="Нидерланды">🇳🇱 Нидерланды</option>
+                    <option value="Польша">🇵🇱 Польша</option>
+                    <option value="Португалия">🇵🇹 Португалия</option>
+                    <option value="Румыния">🇷🇴 Румыния</option>
+                    <option value="Словакия">🇸🇰 Словакия</option>
+                    <option value="Словения">🇸🇮 Словения</option>
+                    <option value="Финляндия">🇫🇮 Финляндия</option>
+                    <option value="Франция">🇫🇷 Франция</option>
+                    <option value="Чехия">🇨🇿 Чехия</option>
+                    <option value="Швеция">🇸🇪 Швеция</option>
+                    <option value="Эстония">🇪🇪 Эстония</option>
+                </select>
+
+                <button type="submit" class="search-btn">Найти</button>
+            </form>
+        </div>
+        <div class="btn-group">
+            {% if user_login %}
+                <h3>Привет, {{ user_name }}! 👋</h3>
+                <a href="/favorites" class="btn btn-fav">❤️ Избранное</a>
+
+                {% if session.get('is_admin') == 1 or session.get('is_moderator') == 1 %} 
+                    <a href="/admin" class="btn btn-admin">⚙️ Админка</a>
+                {% endif %}
+
+                {% if session.get('is_admin') == 1 or session.get('can_chat') == 1 %}
+                    <a href="/admin/chats" class="btn btn-admin">💬 Входящие</a>
+                {% endif %}
+
+                {% if session.get('is_admin') != 1 and session.get('can_chat') != 1 %}
+                    <a href="/support" class="btn btn-support">🎧 Написать админу</a>
+                {% endif %}
+
+                <a href="/my_ads" class="btn btn-login" style="background: #fab1a0; color: white; border: none;">📦 Мои</a>
+                <a href="/create" class="btn btn-create">+ Объявление</a>
+                <a href="/logout" class="btn btn-logout">Выйти</a>
+            {% else %}
+                <a href="/login" class="btn btn-login">Войти</a>
+                <a href="/register" class="btn btn-create">Регистрация</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <h2>✨ Свежие объявления</h2>
+
+    <div class="container">
+        <div class="ad-banner">
+            <div class="ad-label">РЕКЛАМА</div>
+            🚀 Хочешь продать быстрее? Тогда закрепи свое объявление!
+            <br>
+            <button class="btn-buy-vip" onclick="openVipModal()">Купить VIP статус</button>
+        </div>
+
+        {% for item in items %}
+
+            {% if loop.index == 4 %}
+                <div class="ad-banner" style="background: linear-gradient(45deg, #a18cd1 0%, #fbc2eb 100%); box-shadow: 0 10px 20px rgba(161, 140, 209, 0.4);">
+                    <div class="ad-label">РЕКЛАМА</div>
+                    📢 Здесь могла бы быть ваша реклама!<br>
+                    Свяжитесь с нами для размещения.
+                </div>
+            {% endif %}
+
+            <div class="item-card {% if item['vip_expiry'] > time.time() %}vip-card{% endif %}">
+                <div class="gallery-box">
+                    <img src="{{ item['image1'] }}" class="main-image">
+                    <div class="thumbnails">
+                        {% if item['image2'] %}<img src="{{ item['image2'] }}" class="thumb">{% endif %}
+                        {% if item['image3'] %}<img src="{{ item['image3'] }}" class="thumb">{% endif %}
+                    </div>
+                </div>
+
+                <div class="item-info">
+
+                    {% if user_login %}
+                        <a href="/fav/{{ item['id'] }}" class="fav-heart">
+                            {% if item['id'] in liked_ids %}
+                                ❤️
+                            {% else %}
+                                🤍
+                            {% endif %}
+                        </a>
+                    {% endif %}
+
+                    {% if user_login == item['owner_login'] or session.get('is_admin') == 1 or session.get('can_ban') == 1 %}
+                        <a href="/delete/{{ item['id'] }}" class="delete-btn">🗑 Удалить</a>
+                    {% endif %}
+
+                    {% if item['vip_expiry'] > time.time() %}
+                        <div class="vip-badge">👑 VIP Объявление</div>
+                    {% endif %}
+
+                    <a href="/item/{{ item['id'] }}" class="item-title">{{ item['title'] }}</a>
+
+                    <span class="category-tag">{{ item['category'] }}</span> 
+                    <span class="location-tag">📍 {{ item['city'] }} ({{ item['region'] }})</span>
+                    <br>
+                    <span class="price">{{ item['price'] }} €</span> 
+
+                    <p class="description">{{ item['description'][:100] }}...</p> 
+
+                    <div class="seller-info">
+                        <span>👤 {{ item['owner_name'] }}</span>
+                        <span style="margin-left: 10px; color: gray;">👁️ {{ item['views'] }}</span>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div style="background: white; padding: 40px; border-radius: 20px; text-align: center;">
+                <h3>Пусто... 🦗</h3>
+                <p>По вашему запросу ничего не найдено.</p>
+                <a href="/" style="color: #0984e3; font-weight: bold;">Сбросить фильтры</a>
+            </div>
+        {% endfor %}
+
+        {% if total_pages > 1 %}
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="/?page={{ page - 1 }}" class="page-btn">← Назад</a>
+                {% endif %}
+                <span class="current-page">Страница {{ page }}</span>
+                {% if page < total_pages %}
+                    <a href="/?page={{ page + 1 }}" class="page-btn">Вперед →</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div id="vipModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeVipModal()">&times;</span>
+            <h2 style="color: #0984e3; margin-top: 10px;">👑 VIP Статус</h2>
+            <p>Закрепите ваше объявление вверху списка и выделите его золотой рамкой!</p>
+
+            <ul class="vip-price-list">
+                <li>1 день — 1€</li>
+                <li>7 дней — 4,99€</li>
+                <li>30 дней (Месяц) — 15€</li>
+            </ul>
+
+            <p style="margin-top: 20px; font-weight: bold; color: #636e72;">
+                ℹ️ Для покупки напишите Администратору в чат поддержки.
+            </p>
+
+            {% if user_login %}
+                <a href="/support" class="btn btn-support" style="margin-top: 10px; display: inline-block; width: auto;">🎧 Написать Админу</a>
+            {% else %}
+                <p><i><a href="/login" style="color:#0984e3;">Войдите</a>, чтобы написать админу.</i></p>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer style="background: white; padding: 30px; margin-top: 50px; text-align: center; border-top: 1px solid #dfe6e9;">
+        <div style="max-width: 800px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+            <a href="/policy" style="color: #636e72; text-decoration: none;">Политика конфиденциальности</a>
+            <a href="/terms" style="color: #636e72; text-decoration: none;">Правила использования</a>
+        </div>
+        <p style="color: #b2bec3; font-size: 0.8em; margin-top: 20px;">
+            © 2025 YohkEcar Europe. Все права защищены.<br>
+            Сделано с любовью для ЕС 🇪🇺
+        </p>
+    </footer>
+
+    <script>
+        function openVipModal() { document.getElementById('vipModal').style.display = 'flex'; }
+        function closeVipModal() { document.getElementById('vipModal').style.display = 'none'; }
+        window.onclick = function(event) {
+            var modal = document.getElementById('vipModal');
+            if (event.target == modal) { modal.style.display = "none"; }
+        }
+    </script>
+
+    </body>
+    </html>

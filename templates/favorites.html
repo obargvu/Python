@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранное</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Nunito', sans-serif; background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%); margin: 0; color: #2d3436; min-height: 100vh; text-align: center;}
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+        h1 { font-family: 'Montserrat', sans-serif; color: white; margin-top: 30px; }
+
+        .item-card { background: white; padding: 20px; border-radius: 20px; display: flex; gap: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; align-items: center; position: relative; text-align: left;}
+
+        .main-image { width: 120px; height: 120px; object-fit: cover; border-radius: 15px; }
+
+        .item-info { flex: 1; }
+        .item-title { text-decoration: none; color: #2d3436; font-size: 1.4em; font-weight: 800; display: block; margin-bottom: 5px; }
+        .price { color: #0984e3; font-weight: 800; font-size: 1.2em; background: #e1f5fe; padding: 3px 12px; border-radius: 10px; }
+
+        .btn-remove { position: absolute; top: 20px; right: 20px; text-decoration: none; font-size: 1.5em; }
+        .btn-back { display: inline-block; margin-top: 20px; background: white; color: #0984e3; padding: 10px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; }
+
+        @media (max-width: 600px) {
+            .item-card { flex-direction: column; text-align: center; }
+            .btn-remove { position: static; display: block; margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>❤️ Моё Избранное</h1>
+
+    <div class="container">
+        {% if items %}
+            {% for item in items %}
+                <div class="item-card">
+                    <img src="{{ item['image1'] }}" class="main-image">
+                    <div class="item-info">
+                        <a href="/item/{{ item['id'] }}" class="item-title">{{ item['title'] }}</a>
+                        <span class="price">{{ item['price'] }} €</span>
+                        <br><br>
+                        <span style="color: gray;">📍 {{ item['city'] }}</span>
+                    </div>
+                    <a href="/fav/{{ item['id'] }}" class="btn-remove" title="Убрать">💔</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div style="background: white; padding: 50px; border-radius: 20px;">
+                <h2>Тут пока пусто 🤷‍♂️</h2>
+                <p>Добавляйте товары в избранное, чтобы не потерять их.</p>
+            </div>
+        {% endif %}
+
+        <a href="/" class="btn-back">← На главную</a>
+    </div>
+
+</body>
+</html>
